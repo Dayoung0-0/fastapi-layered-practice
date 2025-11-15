@@ -38,12 +38,22 @@ class AnonymousBoardRepositoryImpl(AnonymousBoardRepository):
         finally:
             db.close()
 
-    def list(self) -> List[AnonymousBoard]:
+    def find_all(self) -> List[AnonymousBoard]:
         db = SessionLocal()
 
         try:
             return (db.query(AnonymousBoard).
                     order_by(AnonymousBoard.created_at.desc()).all())
+
+        finally:
+            db.close()
+
+    def find_by_id(self, id: str) -> AnonymousBoard:
+        db = SessionLocal()
+
+        try:
+            return (db.query(AnonymousBoard).
+                    filter(AnonymousBoard.id == id).first())
 
         finally:
             db.close()
